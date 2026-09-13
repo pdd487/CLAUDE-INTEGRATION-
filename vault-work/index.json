@@ -1,0 +1,130 @@
+{
+  "generatedAt": "2026-09-13T21:12:09.893Z",
+  "count": 7,
+  "entries": [
+    {
+      "file": "01_core_dumps/2026-09-13_dump.md",
+      "line": 20,
+      "section": "01_core_dumps",
+      "date": "2026-09-13",
+      "time": "07:40",
+      "title": "Example entry: an open item carried from the page",
+      "anchor": "0740--example-entry-an-open-item-carried-from-the-page",
+      "notebook": {
+        "id": "WS-01",
+        "start": 1,
+        "end": 2
+      },
+      "machine": "01154",
+      "status": "open",
+      "tags": [
+        "example",
+        "waiting-on-parts"
+      ],
+      "excerpt": "Open items get pulled to the top of `INDEX.md`, so the jobs still hanging off a page you stopped turning to stay in front of you."
+    },
+    {
+      "file": "01_core_dumps/2026-09-13_dump.md",
+      "line": 8,
+      "section": "01_core_dumps",
+      "date": "2026-09-13",
+      "time": "07:15",
+      "title": "Example entry: what a logged page looks like",
+      "anchor": "0715--example-entry-what-a-logged-page-looks-like",
+      "notebook": {
+        "id": "WL-01",
+        "start": 1,
+        "end": 1
+      },
+      "machine": "00255",
+      "status": "done",
+      "tags": [
+        "example",
+        "reference"
+      ],
+      "excerpt": "Placeholder so the index has something to chew on — delete it once real pages are logged. `00255` is the Brother S700X1 per `02_raw_data/machine_roster.md`."
+    },
+    {
+      "file": "02_raw_data/machine_roster.md",
+      "line": 16,
+      "section": "02_raw_data",
+      "date": null,
+      "time": null,
+      "title": "Machining centers and mills",
+      "anchor": "machining-centers-and-mills",
+      "notebook": null,
+      "machine": null,
+      "status": null,
+      "tags": [],
+      "excerpt": "| Center | Year | Description | Control | | --- | --- | --- | --- |"
+    },
+    {
+      "file": "02_raw_data/machine_roster.md",
+      "line": 54,
+      "section": "02_raw_data",
+      "date": null,
+      "time": null,
+      "title": "Turning, VTL and plant equipment",
+      "anchor": "turning-vtl-and-plant-equipment",
+      "notebook": null,
+      "machine": null,
+      "status": null,
+      "tags": [
+        "1",
+        "2"
+      ],
+      "excerpt": "| Center | Year | Description | Control | | --- | --- | --- | --- |"
+    },
+    {
+      "file": "02_raw_data/machine_roster.md",
+      "line": 91,
+      "section": "02_raw_data",
+      "date": null,
+      "time": null,
+      "title": "Transcription notes",
+      "anchor": "transcription-notes",
+      "notebook": null,
+      "machine": null,
+      "status": null,
+      "tags": [
+        "reference",
+        "verify"
+      ],
+      "excerpt": "The CONTROL column printed offset by about half a row on both pages, so it was re-aligned by count: 29 control values map to the 29 rows from 01102 to 01160,"
+    },
+    {
+      "file": "02_raw_data/notebook_register.md",
+      "line": 18,
+      "section": "02_raw_data",
+      "date": null,
+      "time": null,
+      "title": "Page numbering",
+      "anchor": "page-numbering",
+      "notebook": null,
+      "machine": null,
+      "status": null,
+      "tags": [
+        "convention",
+        "reference"
+      ],
+      "excerpt": "Number **every writable side**, straight through, starting at 1 on the first side you write on. A 70-sheet book therefore runs to about p.140 and a"
+    },
+    {
+      "file": "02_raw_data/notebook_register.md",
+      "line": 28,
+      "section": "02_raw_data",
+      "date": null,
+      "time": null,
+      "title": "What a work entry needs",
+      "anchor": "what-a-work-entry-needs",
+      "notebook": null,
+      "machine": null,
+      "status": null,
+      "tags": [
+        "convention",
+        "reference"
+      ],
+      "excerpt": "- **Notebook:** `WL-01 p.41-42` — the book and the side(s) the note is on. - **Machine:** the Center number from `machine_roster.md` (`00255`), not a"
+    }
+  ]
+}

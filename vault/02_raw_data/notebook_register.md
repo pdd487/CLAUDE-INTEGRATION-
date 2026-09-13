@@ -2,20 +2,33 @@
 type: raw_data
 ---
 
-# Physical notebook register
+# Physical notebook register — Root Sandbox (personal)
 
-One heading per physical notebook. Write the same id on the cover of the book
-in marker, and the page numbers in the corner of every page — the index is only
-as good as the page numbers on the paper.
+Personal notebooks only. This vault is **not for work**; the shop notebooks and
+the machine roster live in `vault-work/`.
 
-| Notebook id | Cover / description | Started | Filled | Where it lives |
-| --- | --- | --- | --- | --- |
-| NB-01 | _(fill in)_ | _(date)_ | _(date)_ | _(toolbox, desk, truck)_ |
+| Notebook id | Book | Sheets | Started | Filled | Where it lives |
+| --- | --- | --- | --- | --- | --- |
+| RS-01 | Root Sandbox — green Meijer wide-ruled spiral, 10.5 x 8 in | 70 | Sep 2026 | — | _(fill in)_ |
 
-## Conventions
+Cover reads *Root Sandbox — personal, not for work*: story writing and personal
+research notes. Subject headings from the cover aren't transcribed here — log
+them per entry with tags as you go.
+
+The next book is `RS-02`, so the index stays sortable and the old references
+stay valid.
+
+## Page numbering
 - **Tags:** #reference #convention
 
-- Notebook ids are short and sortable: `NB-01`, `NB-02`, ...
-- Page numbers are per-notebook, starting at 1 on the first right-hand page.
-- A single entry may span pages: `NB-01 p.12-14`.
-- Machine ids come from `machine_roster.md` so search stays consistent.
+Number **every writable side**, straight through, starting at 1. 70 sheets runs
+to roughly p.140. Same corner every time, in pen, before you write on the page —
+a page without a number can't be indexed.
+
+## What an entry needs
+- **Tags:** #reference #convention
+
+- **Notebook:** `RS-01 p.12-14` — the book and the side(s).
+- **Status:** `open` for a thread you mean to come back to.
+- **Tags:** whatever you'd search on later. No machine line over here —
+  that's a work-vault field.

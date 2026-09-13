@@ -16,6 +16,11 @@
     "index:check": "node scripts/notebook.js index --check",
     "search": "node scripts/notebook.js search",
     "notebooks": "node scripts/notebook.js notebooks",
+    "log:work": "node scripts/notebook.js log --vault vault-work",
+    "index:work": "node scripts/notebook.js index --vault vault-work",
+    "index:work:check": "node scripts/notebook.js index --check --vault vault-work",
+    "search:work": "node scripts/notebook.js search --vault vault-work",
+    "notebooks:work": "node scripts/notebook.js notebooks --vault vault-work",
     "test": "node --test scripts/test/*.test.js"
   }
 }

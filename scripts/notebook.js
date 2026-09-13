@@ -8,6 +8,7 @@
  *   node scripts/notebook.js notebooks
  */
 import fs from 'node:fs';
+import path from 'node:path';
 import { buildIndex } from './lib/build-index.js';
 import { formatNotebookRef, formatRanges, loadEntries, pageCoverage, parseNotebookRef, parseTags } from './lib/entries.js';
 import { buildNotebookRef, logEntry, renderEntry } from './lib/log.js';
@@ -121,7 +122,8 @@ function cmdIndex(vaultDir, { flags }) {
   ensureVault(vaultDir);
   const { json, markdown } = buildIndex(vaultDir, { write: !flags.check });
   if (flags.check) {
-    const current = fs.existsSync(`${vaultDir}/INDEX.md`) ? fs.readFileSync(`${vaultDir}/INDEX.md`, 'utf8') : '';
+    const indexFile = path.join(vaultDir, 'INDEX.md');
+    const current = fs.existsSync(indexFile) ? fs.readFileSync(indexFile, 'utf8') : '';
     const stale = current.replace(/^- \*\*Generated:.*$/m, '') !== markdown.replace(/^- \*\*Generated:.*$/m, '');
     if (stale) {
       console.error('INDEX.md is out of date — run `npm run index`.');
@@ -135,7 +137,8 @@ function cmdIndex(vaultDir, { flags }) {
     return 0;
   }
   const linked = json.entries.filter((e) => e.notebook).length;
-  console.log(`Wrote vault/INDEX.md and vault/index.json — ${json.count} entries, ${linked} tied to a notebook page.`);
+  const where = path.relative(process.cwd(), vaultDir) || vaultDir;
+  console.log(`Wrote ${where}/INDEX.md and ${where}/index.json — ${json.count} entries, ${linked} tied to a notebook page.`);
   return 0;
 }
 

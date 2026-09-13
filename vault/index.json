@@ -1,27 +1,26 @@
 {
-  "generatedAt": "2026-09-13T20:53:34.645Z",
+  "generatedAt": "2026-09-13T21:12:09.676Z",
   "count": 4,
   "entries": [
     {
       "file": "01_core_dumps/2026-09-13_dump.md",
-      "line": 20,
+      "line": 19,
       "section": "01_core_dumps",
       "date": "2026-09-13",
       "time": "07:40",
-      "title": "Example entry: an open item carried from the page",
-      "anchor": "0740--example-entry-an-open-item-carried-from-the-page",
+      "title": "Example entry: a thread left open",
+      "anchor": "0740--example-entry-a-thread-left-open",
       "notebook": {
-        "id": "NB-01",
+        "id": "RS-01",
         "start": 2,
         "end": 3
       },
-      "machine": "MAZAK-02",
+      "machine": null,
       "status": "open",
       "tags": [
-        "example",
-        "waiting-on-parts"
+        "example"
       ],
-      "excerpt": "Entries with `- **Status:** open` are pulled to the top of `vault/INDEX.md`, so the open loops from the paper notebook stay visible."
+      "excerpt": "Entries with `- **Status:** open` are pulled to the top of `vault/INDEX.md`, so the loose threads from the paper notebook stay visible."
     },
     {
       "file": "01_core_dumps/2026-09-13_dump.md",
@@ -32,11 +31,11 @@
       "title": "Example entry: how a notebook page gets logged",
       "anchor": "0715--example-entry-how-a-notebook-page-gets-logged",
       "notebook": {
-        "id": "NB-01",
+        "id": "RS-01",
         "start": 1,
         "end": 1
       },
-      "machine": "BROTHER-01",
+      "machine": null,
       "status": "done",
       "tags": [
         "example",
@@ -45,13 +44,13 @@
       "excerpt": "This entry exists so the index has something to chew on. Delete it once real pages are logged."
     },
     {
-      "file": "02_raw_data/machine_roster.md",
-      "line": 15,
+      "file": "02_raw_data/notebook_register.md",
+      "line": 21,
       "section": "02_raw_data",
       "date": null,
       "time": null,
-      "title": "Why ids instead of names",
-      "anchor": "why-ids-instead-of-names",
+      "title": "Page numbering",
+      "anchor": "page-numbering",
       "notebook": null,
       "machine": null,
       "status": null,
@@ -59,16 +58,16 @@
         "convention",
         "reference"
       ],
-      "excerpt": "Machines get called different things by different people. One id per machine means `notebook.js search --machine BROTHER-01` returns every page you ever"
+      "excerpt": "Number **every writable side**, straight through, starting at 1. 70 sheets runs to roughly p.140. Same corner every time, in pen, before you write on the page —"
     },
     {
       "file": "02_raw_data/notebook_register.md",
-      "line": 15,
+      "line": 28,
       "section": "02_raw_data",
       "date": null,
       "time": null,
-      "title": "Conventions",
-      "anchor": "conventions",
+      "title": "What an entry needs",
+      "anchor": "what-an-entry-needs",
       "notebook": null,
       "machine": null,
       "status": null,
@@ -76,7 +75,7 @@
         "convention",
         "reference"
       ],
-      "excerpt": "- Notebook ids are short and sortable: `NB-01`, `NB-02`, ... - Page numbers are per-notebook, starting at 1 on the first right-hand page."
+      "excerpt": "- **Notebook:** `RS-01 p.12-14` — the book and the side(s). - **Status:** `open` for a thread you mean to come back to."
     }
   ]
 }
