@@ -1,0 +1,21 @@
+{
+  "name": "root-sandbox",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Root Sandbox vault — physical notebook logging and index",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "notebook": "scripts/notebook.js"
+  },
+  "scripts": {
+    "log": "node scripts/notebook.js log",
+    "index": "node scripts/notebook.js index",
+    "index:check": "node scripts/notebook.js index --check",
+    "search": "node scripts/notebook.js search",
+    "notebooks": "node scripts/notebook.js notebooks",
+    "test": "node --test scripts/test/*.test.js"
+  }
+}

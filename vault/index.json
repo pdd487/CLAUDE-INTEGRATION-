@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-09-13T20:53:34.645Z",
+  "count": 4,
+  "entries": [
+    {
+      "file": "01_core_dumps/2026-09-13_dump.md",
+      "line": 20,
+      "section": "01_core_dumps",
+      "date": "2026-09-13",
+      "time": "07:40",
+      "title": "Example entry: an open item carried from the page",
+      "anchor": "0740--example-entry-an-open-item-carried-from-the-page",
+      "notebook": {
+        "id": "NB-01",
+        "start": 2,
+        "end": 3
+      },
+      "machine": "MAZAK-02",
+      "status": "open",
+      "tags": [
+        "example",
+        "waiting-on-parts"
+      ],
+      "excerpt": "Entries with `- **Status:** open` are pulled to the top of `vault/INDEX.md`, so the open loops from the paper notebook stay visible."
+    },
+    {
+      "file": "01_core_dumps/2026-09-13_dump.md",
+      "line": 8,
+      "section": "01_core_dumps",
+      "date": "2026-09-13",
+      "time": "07:15",
+      "title": "Example entry: how a notebook page gets logged",
+      "anchor": "0715--example-entry-how-a-notebook-page-gets-logged",
+      "notebook": {
+        "id": "NB-01",
+        "start": 1,
+        "end": 1
+      },
+      "machine": "BROTHER-01",
+      "status": "done",
+      "tags": [
+        "example",
+        "reference"
+      ],
+      "excerpt": "This entry exists so the index has something to chew on. Delete it once real pages are logged."
+    },
+    {
+      "file": "02_raw_data/machine_roster.md",
+      "line": 15,
+      "section": "02_raw_data",
+      "date": null,
+      "time": null,
+      "title": "Why ids instead of names",
+      "anchor": "why-ids-instead-of-names",
+      "notebook": null,
+      "machine": null,
+      "status": null,
+      "tags": [
+        "convention",
+        "reference"
+      ],
+      "excerpt": "Machines get called different things by different people. One id per machine means `notebook.js search --machine BROTHER-01` returns every page you ever"
+    },
+    {
+      "file": "02_raw_data/notebook_register.md",
+      "line": 15,
+      "section": "02_raw_data",
+      "date": null,
+      "time": null,
+      "title": "Conventions",
+      "anchor": "conventions",
+      "notebook": null,
+      "machine": null,
+      "status": null,
+      "tags": [
+        "convention",
+        "reference"
+      ],
+      "excerpt": "- Notebook ids are short and sortable: `NB-01`, `NB-02`, ... - Page numbers are per-notebook, starting at 1 on the first right-hand page."
+    }
+  ]
+}
