@@ -1,0 +1,17 @@
+{
+  "name": "Base Bench",
+  "short_name": "Base Bench",
+  "description": "Hex, decimal, octal and binary converter and calculator with a clickable bit map and a 0-255 reference chart.",
+  "start_url": "./",
+  "scope": "./",
+  "id": "base-bench",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#EFF1EE",
+  "theme_color": "#0F6E45",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

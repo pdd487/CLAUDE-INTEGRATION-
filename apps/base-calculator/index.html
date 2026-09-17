@@ -1,7 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Base Bench</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<meta name="description" content="Hex, decimal, octal and binary converter and calculator with a clickable bit map and a 0-255 reference chart.">
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0F6E45" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121614" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="./icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Base Bench">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<link rel="stylesheet" href="./fonts/fonts.css">
 <style>
   :root {
     --bg: #EFF1EE;
@@ -60,7 +75,18 @@
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
 
+  /* Installed on a phone the app runs edge to edge, so keep content clear of
+     the notch and the home indicator. Zero everywhere else. */
+  html {
+    color-scheme: light dark;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
   body {
+    margin: 0;
     background: var(--bg);
     color: var(--ink);
     font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
@@ -373,6 +399,9 @@
     * { animation: none !important; transition: none !important; }
   }
 </style>
+</head>
+
+<body>
 
 <div class="wrap">
   <div class="plate">
@@ -863,3 +892,17 @@
   runCalc();
 })();
 </script>
+
+<script>
+// Cache the app on first visit so it opens with no signal afterwards.
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    try {
+      navigator.serviceWorker.register("./sw.js");
+    } catch (e) { /* file:// or an unsupported browser — app still runs */ }
+  });
+}
+</script>
+
+</body>
+</html>
