@@ -177,12 +177,15 @@
     font-size: 1rem;
     color: var(--ink);
   }
+  /* 16px keeps iOS from zooming the page when a control takes focus, and the
+     min-height keeps every control a real finger target. */
   select {
     background: var(--surface);
     border: 1px solid var(--line-2);
     border-radius: 2px;
-    padding: 5px 7px;
-    font-size: 0.82rem;
+    padding: 6px 7px;
+    min-height: 40px;
+    font-size: 1rem;
     font-weight: 600;
   }
   :is(select, input, button):focus-visible {
@@ -252,8 +255,9 @@
     display: grid;
     gap: 1px;
     justify-items: center;
-    width: 30px;
-    padding: 4px 0 3px;
+    align-content: center;
+    width: 32px;
+    height: 46px;
     background: var(--surface-2);
     border: 1px solid var(--line-2);
     border-radius: 2px;
@@ -288,7 +292,7 @@
     align-items: center;
   }
   .op-line { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .op-line select { font-size: 0.9rem; padding: 7px 8px; }
+  .op-line select { font-size: 1rem; padding: 7px 8px; }
   #op { flex: 1 1 160px; }
 
   .btn {
@@ -297,6 +301,7 @@
     letter-spacing: 0.06em;
     text-transform: uppercase;
     padding: 8px 14px;
+    min-height: 44px;
     border-radius: 2px;
     border: 1px solid var(--accent);
     background: var(--accent);
@@ -346,17 +351,33 @@
     flex: 1 1 130px;
     min-width: 0;
     font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 0.82rem;
+    font-size: 1rem;
+    min-height: 40px;
     background: var(--surface);
     border: 1px solid var(--line-2);
     border-radius: 2px;
-    padding: 5px 8px;
+    padding: 6px 8px;
   }
   .scroller {
     max-height: min(70vh, 720px);
     overflow: auto;
+    /* Keep a flick inside the chart from scrolling the page behind it. */
+    overscroll-behavior: contain;
   }
   @media (max-width: 900px) { .scroller { max-height: 55vh; } }
+
+  /* A touch device laid out wider than a phone usually means the viewport tag
+     was ignored — a local content:// file, or Chrome's "Desktop site" toggle.
+     Give it the phone layout anyway rather than a shrunken desktop one. The
+     media query covers it without JS; the class is set by the boot code. */
+  @media (pointer: coarse) and (max-width: 1200px) {
+    .grid { grid-template-columns: minmax(0, 1fr); }
+    .chart-panel { position: static; }
+    .scroller { max-height: 55vh; }
+  }
+  :root.force-narrow .grid { grid-template-columns: minmax(0, 1fr); }
+  :root.force-narrow .chart-panel { position: static; }
+  :root.force-narrow .scroller { max-height: 55vh; }
 
   table { border-collapse: collapse; width: 100%; }
   thead th {
@@ -429,7 +450,7 @@
         <div class="panel-body">
           <div class="row">
             <span class="tag">HEX</span>
-            <input class="field" id="f-hex" inputmode="text" spellcheck="false" autocomplete="off" aria-label="Hexadecimal value">
+            <input class="field" id="f-hex" inputmode="text" autocapitalize="characters" autocorrect="off" spellcheck="false" autocomplete="off" aria-label="Hexadecimal value">
             <p class="msg" id="m-hex"></p>
           </div>
           <div class="row">
@@ -472,7 +493,7 @@
         <div class="panel-body">
           <div class="calc-line">
             <span class="tag">A</span>
-            <input class="field" id="f-a" spellcheck="false" autocomplete="off" aria-label="Operand A">
+            <input class="field" id="f-a" inputmode="text" autocapitalize="characters" autocorrect="off" spellcheck="false" autocomplete="off" aria-label="Operand A">
           </div>
 
           <div class="op-line">
@@ -497,7 +518,7 @@
 
           <div class="calc-line" id="row-b">
             <span class="tag">B</span>
-            <input class="field" id="f-b" spellcheck="false" autocomplete="off" aria-label="Operand B">
+            <input class="field" id="f-b" inputmode="text" autocapitalize="characters" autocorrect="off" spellcheck="false" autocomplete="off" aria-label="Operand B">
           </div>
 
           <p class="err" id="calc-err"></p>
@@ -524,7 +545,7 @@
       <header>
         <h2>Chart 0&ndash;255</h2>
         <span class="spacer"></span>
-        <input class="filter" id="filter" placeholder="filter&hellip;" spellcheck="false" autocomplete="off" aria-label="Filter chart rows">
+        <input class="filter" id="filter" inputmode="text" autocapitalize="characters" autocorrect="off" placeholder="filter&hellip;" spellcheck="false" autocomplete="off" aria-label="Filter chart rows">
       </header>
       <div class="scroller" id="scroller">
         <table>
@@ -669,8 +690,15 @@
     var row = document.getElementById("r" + value.toString());
     if (!row || row.hidden) return;
     row.classList.add("here");
+
+    // Only chase the row once it has actually left the visible strip, so the
+    // chart doesn't lurch on every keystroke.
     var box = $("scroller");
-    box.scrollTop = row.offsetTop - box.clientHeight / 2 + row.offsetHeight / 2;
+    var rb = row.getBoundingClientRect();
+    var bb = box.getBoundingClientRect();
+    if (rb.top < bb.top || rb.bottom > bb.bottom) {
+      box.scrollTop += (rb.top - bb.top) - (bb.height - rb.height) / 2;
+    }
   }
 
   function render(skipEl) {
@@ -885,6 +913,29 @@
   });
 
   /* ---------- boot ---------- */
+
+  // A touch device laid out at desktop width means the viewport tag was
+  // ignored, which shrinks the whole page. Ask for device width again and
+  // flag the layout. Guarded on a coarse pointer so a desktop is never hit.
+  (function fitToDevice() {
+    try {
+      if (!window.matchMedia || !window.matchMedia("(pointer: coarse)").matches) return;
+      if (window.innerWidth <= 900) return;
+      var vp = document.querySelector('meta[name="viewport"]');
+      if (vp) vp.setAttribute("content", "width=device-width, initial-scale=1, viewport-fit=cover");
+      document.documentElement.classList.add("force-narrow");
+    } catch (e) { /* layout stays as it is */ }
+  })();
+
+  // Hex needs letters; the other bases are digits only, so ask for the
+  // keypad instead of a full keyboard.
+  function syncKeypads() {
+    var mode = $("calc-base").value === "16" ? "text" : "numeric";
+    $("f-a").setAttribute("inputmode", mode);
+    $("f-b").setAttribute("inputmode", mode);
+  }
+  $("calc-base").addEventListener("change", syncKeypads);
+  syncKeypads();
 
   $("f-a").value = "1F";
   $("f-b").value = "0F";
