@@ -24,6 +24,18 @@ tap Share, then **Add to Home Screen**.
 
 Open it once while on wifi. After that it runs with no signal at all.
 
+## One-file version
+
+`base-bench-standalone.html` is the entire app in a single file, fonts and all
+— no server, no network, nothing beside it. Save it anywhere and open it in a
+browser. Useful when Pages isn't set up, or for dropping on a machine that has
+no internet at all. It can't be pinned to a phone home screen, though; that
+needs a real URL.
+
+Rebuild it after any change to `index.html`:
+
+    node build-standalone.cjs
+
 ## Files
 
 | File | Purpose |
@@ -33,6 +45,8 @@ Open it once while on wifi. After that it runs with no signal at all.
 | `manifest.webmanifest` | App name, icons, standalone display |
 | `fonts/` | Archivo + IBM Plex Mono, latin subset, self-hosted |
 | `icon-*.png` | Home screen icons (180 for iOS, 192/512 for Android) |
+| `base-bench-standalone.html` | Generated one-file build with the fonts inlined |
+| `build-standalone.cjs` | Regenerates that one-file build from `index.html` |
 
 ## Notes
 
