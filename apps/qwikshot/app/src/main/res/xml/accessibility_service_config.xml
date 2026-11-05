@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    QwiKShot never reads the screen. It needs this service for two things only:
+    the window token behind TYPE_ACCESSIBILITY_OVERLAY, and
+    performGlobalAction(GLOBAL_ACTION_TAKE_SCREENSHOT).
+
+    canRetrieveWindowContent is false, and the service subscribes only to
+    announcement events (the rarest type), so onAccessibilityEvent stays
+    effectively silent and costs no battery.
+-->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeAnnouncement"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagDefault"
+    android:canRetrieveWindowContent="false"
+    android:description="@string/accessibility_service_description"
+    android:notificationTimeout="0"
+    android:settingsActivity="com.qwikshot.app.MainActivity" />

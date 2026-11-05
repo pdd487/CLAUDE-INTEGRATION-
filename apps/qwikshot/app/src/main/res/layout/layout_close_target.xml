@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Drag-to-dismiss target. Lives in its own non-touchable overlay window that
+     exists only while the bubble is being dragged. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/closeRoot"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:importantForAccessibility="noHideDescendants"
+    android:padding="@dimen/close_target_padding">
+
+    <ImageView
+        android:id="@+id/closeIcon"
+        android:layout_width="@dimen/close_target_size"
+        android:layout_height="@dimen/close_target_size"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_close_target"
+        android:elevation="@dimen/close_target_elevation"
+        android:importantForAccessibility="no"
+        android:padding="@dimen/close_target_icon_padding"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_close" />
+
+</FrameLayout>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QwiKShot</string>
+    <string name="app_tagline">One-tap screenshots from a floating bubble.</string>
+
+    <!-- Accessibility service (shown in Settings > Accessibility) -->
+    <string name="accessibility_service_label">QwiKShot bubble</string>
+    <string name="accessibility_service_description">Shows the QwiKShot floating bubble on top of other apps. Tap the bubble to take a screenshot, the same as pressing Volume Down + Power.\n\nQwiKShot uses this access only to draw the bubble and press the system screenshot button for you. It does not read what is on your screen, see what you type, or collect any data.</string>
+
+    <!-- Bubble -->
+    <string name="bubble_content_description">Take screenshot</string>
+
+    <!-- Step 1: overlay -->
+    <string name="step_one">1</string>
+    <string name="overlay_title">Overlay permission</string>
+    <string name="overlay_body">Backup way to draw the bubble. QwiKShot normally draws it through the accessibility service in Step 2, so this is only used if your phone refuses that.</string>
+    <string name="overlay_button_grant">Grant overlay permission</string>
+    <string name="overlay_button_granted">Overlay permission granted</string>
+
+    <!-- Step 2: accessibility -->
+    <string name="step_two">2</string>
+    <string name="accessibility_title">Accessibility service</string>
+    <string name="accessibility_body_off">Required. This is what lets the bubble float over every app and press the system screenshot button. In the list, open \"QwiKShot bubble\" and turn it on.</string>
+    <string name="accessibility_body_running">Running. The bubble can float over every app and take screenshots.</string>
+    <string name="accessibility_body_stuck">Turned on, but Android has not started it. In Accessibility settings, turn \"QwiKShot bubble\" off and back on.</string>
+    <string name="accessibility_button_enable">Open Accessibility settings</string>
+    <string name="accessibility_button_manage">Accessibility settings</string>
+    <string name="restricted_settings_hint">Installed this APK yourself and the switch is greyed out (\"Restricted setting\")? Open App info, tap the ⋮ menu in the top corner, choose \"Allow restricted settings\", then come back and try again.</string>
+    <string name="app_info_button">Open App info</string>
+
+    <!-- Status pills -->
+    <string name="status_granted">Granted</string>
+    <string name="status_missing">Missing</string>
+    <string name="status_active">Active</string>
+    <string name="status_not_running">Not running</string>
+    <string name="status_off">Off</string>
+
+    <!-- Master toggle -->
+    <string name="master_title">Floating bubble</string>
+    <string name="master_summary_needs_service">Turn on the accessibility service in Step 2 first.</string>
+    <string name="master_summary_on">Showing. Tap it over any app to take a screenshot.</string>
+    <string name="master_summary_off">Hidden. Turn this on to bring the bubble back.</string>
+
+    <!-- Customization -->
+    <string name="customize_title">Customize</string>
+    <string name="size_label">Bubble size</string>
+    <string name="opacity_label">Idle opacity</string>
+    <string name="opacity_help">How see-through the bubble gets after 3 seconds without a touch.</string>
+    <string name="delay_label">Hide delay before screenshot</string>
+    <string name="delay_help">How long the bubble stays hidden before the capture fires. Raise it if the bubble ever shows up in your screenshots.</string>
+    <string name="value_dp">%1$d dp</string>
+    <string name="value_percent">%1$d%%</string>
+    <string name="value_ms">%1$d ms</string>
+    <string name="reset_defaults">Reset to defaults</string>
+
+    <!-- How-to -->
+    <string name="howto_title">Using the bubble</string>
+    <string name="howto_tap_label">Tap</string>
+    <string name="howto_tap">Takes a screenshot. The bubble hides itself first, so it never shows up in the picture.</string>
+    <string name="howto_drag_label">Drag</string>
+    <string name="howto_drag">Moves it. Let go and it snaps to the nearest side.</string>
+    <string name="howto_close_label">Drop on ✕</string>
+    <string name="howto_close">Hides the bubble. Turn it back on here.</string>
+    <string name="howto_long_press_label">Long-press</string>
+    <string name="howto_long_press">Opens this screen.</string>
+
+    <string name="version_format">QwiKShot %1$s</string>
+
+    <!-- Toasts -->
+    <string name="toast_screenshot_failed">Screenshot failed. Android rejected the request.</string>
+    <string name="toast_bubble_hidden">Bubble hidden. Open QwiKShot to bring it back.</string>
+    <string name="toast_overlay_failed">QwiKShot could not draw the bubble. Grant the overlay permission in the app.</string>
+    <string name="toast_settings_unavailable">Could not open that settings screen on this phone.</string>
+</resources>

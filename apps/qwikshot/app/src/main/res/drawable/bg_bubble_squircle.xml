@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Squircle bubble: dark slate gradient, 3dp white rim, 18dp corners at 56dp.
+     A single <shape> inflates as one GradientDrawable, which gives the view a
+     rounded outline for its elevation shadow and lets the service rescale the
+     corner radius in proportion to the bubble size. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/bubble_corner_radius" />
+    <gradient
+        android:angle="315"
+        android:endColor="@color/qs_bubble_fill_end"
+        android:startColor="@color/qs_bubble_fill_start"
+        android:type="linear" />
+    <stroke
+        android:width="@dimen/bubble_stroke_width"
+        android:color="@color/qs_bubble_stroke" />
+</shape>

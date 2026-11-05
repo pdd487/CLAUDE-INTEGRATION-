@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dashboard (Material 3 dark) -->
+    <color name="qs_background">#0B1220</color>
+    <color name="qs_surface_container">#121B2B</color>
+    <color name="qs_surface_container_high">#162133</color>
+    <color name="qs_surface_container_highest">#1A2639</color>
+    <color name="qs_on_surface">#E2E8F0</color>
+    <color name="qs_on_surface_variant">#94A3B8</color>
+    <color name="qs_outline">#475569</color>
+    <color name="qs_outline_variant">#273449</color>
+    <color name="qs_primary">#5EEAD4</color>
+    <color name="qs_on_primary">#042F2E</color>
+    <color name="qs_primary_container">#134E4A</color>
+    <color name="qs_on_primary_container">#CCFBF1</color>
+    <color name="qs_secondary_container">#1C3B3D</color>
+    <color name="qs_on_secondary_container">#CCFBF1</color>
+
+    <!-- Status pills -->
+    <color name="qs_status_ok">#4ADE80</color>
+    <color name="qs_status_warn">#FBBF24</color>
+    <color name="qs_status_missing">#F87171</color>
+    <color name="qs_status_text">#0B1220</color>
+
+    <!-- Floating bubble -->
+    <color name="qs_bubble_fill_start">#334155</color>
+    <color name="qs_bubble_fill_end">#0F172A</color>
+    <color name="qs_bubble_stroke">#FFFFFF</color>
+    <color name="qs_bubble_icon">#FFFFFF</color>
+    <color name="qs_bubble_accent">#2DD4BF</color>
+
+    <!-- Drag-to-dismiss target -->
+    <color name="qs_close_fill">#E6111827</color>
+    <color name="qs_close_armed">#E11D48</color>
+
+    <!-- Launcher icon -->
+    <color name="ic_launcher_background">#14B8A6</color>
+</resources>
