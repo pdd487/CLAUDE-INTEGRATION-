@@ -13,6 +13,7 @@ button sends one line). Read it for these words, case-insensitive:
 - `dry run` → do every step except renaming; report the names you would use.
 - `limit N` → handle at most N files this run. Default 40.
 - `folder NAME` → only files directly inside the Drive folder called NAME.
+- `screenshots only` → only `Screenshot_…` files.
 
 ## 1. Find generic files
 
@@ -90,8 +91,9 @@ Format: **`MM.DD_Subject.ext`**, e.g. `11.06_Ford_SYNC_911_Assist_Fault.jpg`.
   when the number itself appears; never guess a Center number from a model name,
   because many machines share a model.
 - **No usable content** (a photo with no text and only vague labels): use a
-  uniform fallback instead of guessing, `MM.DD_Photo_HHMMSS` for camera pictures
-  or `MM.DD_<App>_Screenshot_HHMMSS` for screenshots (the app from the old name).
+  uniform fallback instead of guessing: `MM.DD_Photo_HHMMSS` for camera pictures,
+  `MM.DD_Video_HHMMSS` for videos (`.mp4`, `.mov`, `.3gp`), or
+  `MM.DD_<App>_Screenshot_HHMMSS` for screenshots (the app from the old name).
   Seconds keep burst shots unique and in order without `_2`, `_3` suffixes.
 - **Privacy:** never put these in a file name: account or card numbers, money
   amounts or balances, passwords, codes, tokens, street addresses, phone
