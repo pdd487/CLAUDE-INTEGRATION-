@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +29,7 @@ import kotlin.math.roundToInt
 
 /**
  * Control dashboard: permission status, master toggle, and live bubble settings.
+ * In QwiKScan it also shows Step 3, where the Google Drive scan folder is chosen.
  *
  * Every control writes straight to [QwiKShotPrefs]; the accessibility service
  * listens to the same preferences and updates the bubble as the sliders move.
@@ -43,6 +45,23 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     private val serviceRunningListener: (Boolean) -> Unit = { runOnUiThread { refreshStatus() } }
 
+    /**
+     * QwiKScan: Drive's own "scan to folder" shortcut maker. Drive shows its folder
+     * picker and returns a launch intent for that folder, the same result a home
+     * screen launcher would get when you add Drive's scan shortcut.
+     */
+    private val driveFolderPicker =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode != RESULT_OK) return@registerForActivityResult
+            val folder = DriveScan.parseFolderPickerResult(result.data)
+            if (folder == null) {
+                toast(R.string.toast_drive_folder_missing)
+            } else {
+                prefs.scanFolder = folder
+            }
+            refreshStatus()
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // The dashboard is always dark, so force light system-bar icons regardless
         // of the phone's own light/dark setting.
@@ -57,9 +76,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         applySystemBarInsets()
         setupPermissionCards()
+        setupDriveCard()
         setupMasterToggle()
         setupSliders()
-        binding.versionText.text = getString(R.string.version_format, BuildConfig.VERSION_NAME)
+        binding.versionText.text =
+            getString(R.string.version_format, getString(R.string.app_name), BuildConfig.VERSION_NAME)
     }
 
     override fun onStart() {
@@ -83,7 +104,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         // The bubble's drag-to-dismiss flips the master toggle from the service side.
-        if (key == QwiKShotPrefs.KEY_BUBBLE_ENABLED || key == null) refreshStatus()
+        when (key) {
+            QwiKShotPrefs.KEY_BUBBLE_ENABLED,
+            QwiKShotPrefs.KEY_SCAN_FOLDER_URI,
+            null -> refreshStatus()
+        }
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -125,7 +150,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         val component = ComponentName(this, QwiKShotAccessibilityService::class.java).flattenToString()
         val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {
             // Undocumented but widely honoured (AOSP, Pixel, Samsung): scrolls to and
-            // highlights QwiKShot in the list. Ignored elsewhere, so harmless.
+            // highlights this app's service in the list. Ignored elsewhere, so harmless.
             putExtra(EXTRA_FRAGMENT_ARG_KEY, component)
             putExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS, Bundle().apply { putString(EXTRA_FRAGMENT_ARG_KEY, component) })
         }
@@ -145,6 +170,68 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         false
     } catch (e: SecurityException) {
         false
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    // Step 3 (QwiKScan): Google Drive
+    // ---------------------------------------------------------------------------------------------
+
+    private fun setupDriveCard() {
+        binding.driveCard.isVisible = BuildConfig.DRIVE_SCAN_MODE
+        // The hide delay only matters for screenshots.
+        binding.delayGroup.isVisible = !BuildConfig.DRIVE_SCAN_MODE
+        if (!BuildConfig.DRIVE_SCAN_MODE) return
+
+        binding.driveButton.setOnClickListener {
+            if (DriveScan.isDriveInstalled(this)) {
+                try {
+                    driveFolderPicker.launch(DriveScan.folderPickerIntent())
+                } catch (e: ActivityNotFoundException) {
+                    toast(R.string.toast_drive_scanner_unavailable)
+                }
+            } else {
+                openDriveInPlayStore()
+            }
+        }
+        binding.driveAskButton.setOnClickListener {
+            prefs.scanFolder = null
+            refreshStatus()
+        }
+    }
+
+    private fun openDriveInPlayStore() {
+        val market = Intent(Intent.ACTION_VIEW, "market://details?id=${DriveScan.DRIVE_PACKAGE}".toUri())
+        val web = Intent(
+            Intent.ACTION_VIEW,
+            "https://play.google.com/store/apps/details?id=${DriveScan.DRIVE_PACKAGE}".toUri(),
+        )
+        if (!launch(market) && !launch(web)) toast(R.string.toast_settings_unavailable)
+    }
+
+    private fun refreshDriveCard() {
+        if (!BuildConfig.DRIVE_SCAN_MODE) return
+        val folder = prefs.scanFolder
+        when {
+            !DriveScan.isDriveInstalled(this) -> {
+                setPill(binding.driveStatus, PillState.MISSING, R.string.status_not_installed)
+                binding.driveBody.setText(R.string.drive_body_missing)
+                binding.driveButton.setText(R.string.drive_button_install)
+                binding.driveAskButton.isVisible = false
+            }
+            folder != null -> {
+                setPill(binding.driveStatus, PillState.OK, R.string.status_folder_set)
+                val name = folder.name?.takeIf { it.isNotBlank() } ?: getString(R.string.drive_folder_unnamed)
+                binding.driveBody.text = getString(R.string.drive_body_folder, name)
+                binding.driveButton.setText(R.string.drive_button_change)
+                binding.driveAskButton.isVisible = true
+            }
+            else -> {
+                setPill(binding.driveStatus, PillState.OK, R.string.status_ready)
+                binding.driveBody.setText(R.string.drive_body_ask)
+                binding.driveButton.setText(R.string.drive_button_choose)
+                binding.driveAskButton.isVisible = false
+            }
+        }
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -180,6 +267,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         )
 
         // Step 2
+        val serviceLabel = getString(R.string.accessibility_service_label)
         when {
             serviceRunning -> {
                 setPill(binding.accessibilityStatus, PillState.OK, R.string.status_active)
@@ -188,12 +276,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             }
             serviceEnabled -> {
                 setPill(binding.accessibilityStatus, PillState.WARN, R.string.status_not_running)
-                binding.accessibilityBody.setText(R.string.accessibility_body_stuck)
+                binding.accessibilityBody.text = getString(R.string.accessibility_body_stuck, serviceLabel)
                 binding.accessibilityButton.setText(R.string.accessibility_button_enable)
             }
             else -> {
                 setPill(binding.accessibilityStatus, PillState.MISSING, R.string.status_off)
-                binding.accessibilityBody.setText(R.string.accessibility_body_off)
+                binding.accessibilityBody.text = getString(R.string.accessibility_body_off, serviceLabel)
                 binding.accessibilityButton.setText(R.string.accessibility_button_enable)
             }
         }
@@ -202,6 +290,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         val showRestrictedHelp = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !serviceRunning
         binding.restrictedHint.isVisible = showRestrictedHelp
         binding.appInfoButton.isVisible = showRestrictedHelp
+
+        // Step 3 (QwiKScan)
+        refreshDriveCard()
 
         // Master toggle
         syncingUi = true

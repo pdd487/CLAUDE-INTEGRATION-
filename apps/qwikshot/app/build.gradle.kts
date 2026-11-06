@@ -21,11 +21,34 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.qwikshot.app"
         minSdk = 28
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+    }
+
+    // One codebase, two installable apps. Both share the floating-bubble engine;
+    // the flavor decides what a tap does. Flavor resources in src/<flavor>/res
+    // override names, colors, and icons so the two bubbles look different on screen.
+    flavorDimensions += "bubble"
+    productFlavors {
+        create("shot") {
+            dimension = "bubble"
+            applicationId = "com.qwikshot.app"
+            versionCode = 2
+            versionName = "1.0.1"
+            // Tap = hide bubble, fire the system screenshot, bring bubble back.
+            buildConfigField("boolean", "DRIVE_SCAN_MODE", "false")
+            buildConfigField("float", "DEFAULT_Y_FRACTION", "0.35f")
+        }
+        create("scan") {
+            dimension = "bubble"
+            applicationId = "com.qwikscan.app"
+            versionCode = 1
+            versionName = "1.0.0"
+            // Tap = open Google Drive's document scanner.
+            buildConfigField("boolean", "DRIVE_SCAN_MODE", "true")
+            // Docks lower than QwiKShot so both bubbles can sit on the same edge.
+            buildConfigField("float", "DEFAULT_Y_FRACTION", "0.55f")
+        }
     }
 
     signingConfigs {

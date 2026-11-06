@@ -47,7 +47,7 @@ class QwiKShotPrefs(context: Context) {
      * rotation and size changes.
      */
     val bubbleYFraction: Float
-        get() = raw.getFloat(KEY_BUBBLE_Y_FRACTION, Y_FRACTION_DEFAULT).coerceIn(0f, 1f)
+        get() = raw.getFloat(KEY_BUBBLE_Y_FRACTION, BuildConfig.DEFAULT_Y_FRACTION).coerceIn(0f, 1f)
 
     fun saveBubblePosition(side: Int, yFraction: Float) = raw.edit {
         putInt(KEY_BUBBLE_SIDE, side)
@@ -60,6 +60,25 @@ class QwiKShotPrefs(context: Context) {
         putInt(KEY_HIDE_DELAY_MS, DELAY_DEFAULT_MS)
     }
 
+    /** QwiKScan only: the Drive folder every scan saves into, or null for "Drive asks". */
+    var scanFolder: DriveScan.Folder?
+        get() {
+            val component = raw.getString(KEY_SCAN_FOLDER_COMPONENT, null) ?: return null
+            val uri = raw.getString(KEY_SCAN_FOLDER_URI, null) ?: return null
+            return DriveScan.Folder(component, uri, raw.getString(KEY_SCAN_FOLDER_NAME, null))
+        }
+        set(value) = raw.edit {
+            if (value == null) {
+                remove(KEY_SCAN_FOLDER_COMPONENT)
+                remove(KEY_SCAN_FOLDER_URI)
+                remove(KEY_SCAN_FOLDER_NAME)
+            } else {
+                putString(KEY_SCAN_FOLDER_COMPONENT, value.component)
+                putString(KEY_SCAN_FOLDER_URI, value.uri)
+                putString(KEY_SCAN_FOLDER_NAME, value.name)
+            }
+        }
+
     companion object {
         const val FILE_NAME = "qwikshot_prefs"
 
@@ -69,6 +88,9 @@ class QwiKShotPrefs(context: Context) {
         const val KEY_HIDE_DELAY_MS = "hide_delay_ms"
         const val KEY_BUBBLE_SIDE = "bubble_side"
         const val KEY_BUBBLE_Y_FRACTION = "bubble_y_fraction"
+        const val KEY_SCAN_FOLDER_COMPONENT = "scan_folder_component"
+        const val KEY_SCAN_FOLDER_URI = "scan_folder_uri"
+        const val KEY_SCAN_FOLDER_NAME = "scan_folder_name"
 
         const val SIDE_LEFT = 0
         const val SIDE_RIGHT = 1
@@ -87,7 +109,5 @@ class QwiKShotPrefs(context: Context) {
         const val DELAY_MAX_MS = 300
         const val DELAY_STEP_MS = 10
         const val DELAY_DEFAULT_MS = 100
-
-        const val Y_FRACTION_DEFAULT = 0.35f
     }
 }

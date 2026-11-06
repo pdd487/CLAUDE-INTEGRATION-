@@ -39,18 +39,25 @@ import kotlin.math.hypot
 import kotlin.math.roundToInt
 
 /**
- * Hosts the QwiKShot floating bubble and fires the system screenshot.
+ * Hosts the floating bubble for both apps built from this project:
+ *  - QwiKShot (`shot` flavor): a tap hides the bubble and fires the system screenshot.
+ *  - QwiKScan (`scan` flavor): a tap opens Google Drive's document scanner ([DriveScan]).
+ * Drag, edge snapping, idle fade, drag-to-dismiss, and long-press are shared.
  *
  * Why an AccessibilityService instead of MediaProjection: MediaProjection asks
  * for consent every session and keeps a capture pipeline running. A bound
- * accessibility service gets two things with no prompt and no idle cost:
+ * accessibility service gets, with no prompt and no idle cost:
  *  - a window token for TYPE_ACCESSIBILITY_OVERLAY, which draws above every app
- *    without SYSTEM_ALERT_WINDOW, and
+ *    without SYSTEM_ALERT_WINDOW,
  *  - performGlobalAction(GLOBAL_ACTION_TAKE_SCREENSHOT), the same path as
- *    Volume Down + Power, so screenshots land in the normal Screenshots folder.
+ *    Volume Down + Power, and
+ *  - an exemption from background activity-start limits, so a tap can bring
+ *    Drive's scanner up over whatever app is showing.
  *
  * The system keeps the service bound while it is enabled, so there is no
- * foreground notification, and nothing runs between touches.
+ * foreground notification, and nothing runs between touches. The class name
+ * stays QwiKShotAccessibilityService in both apps: Android records enabled
+ * services by class name, so renaming it would switch QwiKShot off on update.
  *
  * Everything here runs on the main thread.
  */
@@ -185,7 +192,7 @@ class QwiKShotAccessibilityService : AccessibilityService(),
         // Click and long-click listeners are the real actions. The touch listener
         // decides which one a gesture is; TalkBack's double-tap and long-press reach
         // the same listeners directly.
-        binding.root.setOnClickListener { captureScreenshot() }
+        binding.root.setOnClickListener { onBubbleTapped() }
         binding.root.setOnLongClickListener {
             openDashboard()
             true
@@ -344,7 +351,38 @@ class QwiKShotAccessibilityService : AccessibilityService(),
     }
 
     // ---------------------------------------------------------------------------------------------
-    // Self-hiding capture pipeline
+    // Tap action
+    // ---------------------------------------------------------------------------------------------
+
+    /** QwiKShot takes a screenshot; QwiKScan opens Google Drive's document scanner. */
+    private fun onBubbleTapped() {
+        if (BuildConfig.DRIVE_SCAN_MODE) openDriveScanner() else captureScreenshot()
+    }
+
+    private fun openDriveScanner() {
+        val root = bubble?.root ?: return
+        // Accessibility services are exempt from background activity-start limits,
+        // so Drive opens on top of whatever app is showing.
+        when (DriveScan.launch(this, prefs.scanFolder)) {
+            DriveScan.LaunchResult.OPENED -> pulseHaptic(root, success = true)
+            DriveScan.LaunchResult.OPENED_DRIVE_ONLY -> {
+                pulseHaptic(root, success = false)
+                toast(R.string.toast_drive_scanner_unavailable)
+            }
+            DriveScan.LaunchResult.DRIVE_MISSING -> {
+                pulseHaptic(root, success = false)
+                toast(R.string.toast_drive_missing)
+            }
+            DriveScan.LaunchResult.FAILED -> {
+                pulseHaptic(root, success = false)
+                toast(R.string.toast_drive_scan_failed)
+            }
+        }
+        scheduleIdleFade()
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    // Self-hiding capture pipeline (QwiKShot)
     // ---------------------------------------------------------------------------------------------
 
     /**
@@ -688,7 +726,7 @@ class QwiKShotAccessibilityService : AccessibilityService(),
                 if (prefs.bubbleEnabled) prefs.bubbleEnabled = false else removeBubble()
             }
             .start()
-        toast(R.string.toast_bubble_hidden)
+        toast(getString(R.string.toast_bubble_hidden, getString(R.string.app_name)))
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -803,9 +841,9 @@ class QwiKShotAccessibilityService : AccessibilityService(),
     }
 
     /**
-     * The bubble is hidden while the screenshot fires, so the pulse is the only
-     * sign the capture went through. If the view-level haptic is unavailable, use
-     * the vibrator directly.
+     * In QwiKShot the bubble is hidden while the screenshot fires, so the pulse is
+     * the only sign the capture went through. If the view-level haptic is
+     * unavailable, use the vibrator directly.
      */
     private fun vibrateFallback(success: Boolean) {
         val vibrator: Vibrator? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -829,8 +867,12 @@ class QwiKShotAccessibilityService : AccessibilityService(),
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
+    private fun toast(message: CharSequence) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
     companion object {
-        private const val TAG = "QwiKShot"
+        private val TAG = if (BuildConfig.DRIVE_SCAN_MODE) "QwiKScan" else "QwiKShot"
 
         private const val TAP_TIMEOUT_MS = 250L
         private const val LONG_PRESS_TIMEOUT_MS = 600L

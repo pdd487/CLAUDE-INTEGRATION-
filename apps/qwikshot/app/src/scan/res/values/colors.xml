@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- QwiKScan palette: blue bubble with an amber scan line, so it is easy to tell
+     apart from the slate/teal QwiKShot bubble when both are on screen. -->
+<resources>
+    <color name="qs_primary">#93C5FD</color>
+    <color name="qs_on_primary">#0B1F4D</color>
+    <color name="qs_primary_container">#1E3A8A</color>
+    <color name="qs_on_primary_container">#DBEAFE</color>
+    <color name="qs_secondary_container">#1E2E52</color>
+    <color name="qs_on_secondary_container">#DBEAFE</color>
+
+    <color name="qs_bubble_fill_start">#2563EB</color>
+    <color name="qs_bubble_fill_end">#1E3A8A</color>
+    <color name="qs_bubble_accent">#FBBF24</color>
+
+    <color name="ic_launcher_background">#F59E0B</color>
+</resources>

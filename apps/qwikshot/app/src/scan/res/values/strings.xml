@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- QwiKScan wording. Everything not listed here comes from src/main. -->
+<resources>
+    <string name="app_name">QwiKScan</string>
+    <string name="app_tagline">One tap to scan a document into Google Drive.</string>
+
+    <string name="accessibility_service_label">QwiKScan bubble</string>
+    <string name="accessibility_service_description">Shows the QwiKScan floating bubble on top of other apps. Tap the bubble to open Google Drive\'s document scanner, from any screen.\n\nQwiKScan uses this access only to draw the bubble and open Drive for you. It does not read what is on your screen, see what you type, or collect any data. Your scans go to Google Drive, not to QwiKScan.</string>
+
+    <string name="bubble_content_description">Scan a document to Google Drive</string>
+
+    <string name="master_summary_on">Showing. Tap it over any app to open Drive\'s scanner.</string>
+
+    <string name="howto_tap">Opens Google Drive\'s document scanner. Scans save to your Step 3 folder, or Drive asks where.</string>
+</resources>

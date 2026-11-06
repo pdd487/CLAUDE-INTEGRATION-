@@ -34,7 +34,7 @@
                 android:importantForAccessibility="no"
                 android:padding="12dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_shutter" />
+                android:src="@drawable/ic_bubble_glyph" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -223,6 +223,90 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Step 3: Google Drive (QwiKScan only; hidden in QwiKShot) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/driveCard"
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/card_spacing"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/card_padding">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/step_badge_size"
+                        android:layout_height="@dimen/step_badge_size"
+                        android:background="@drawable/bg_step_badge"
+                        android:gravity="center"
+                        android:importantForAccessibility="no"
+                        android:text="@string/step_three"
+                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        android:textColor="?attr/colorOnPrimaryContainer" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:text="@string/drive_title"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <TextView
+                        android:id="@+id/driveStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_status_pill"
+                        android:paddingStart="10dp"
+                        android:paddingTop="3dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="3dp"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        android:textColor="@color/qs_status_text"
+                        android:textStyle="bold"
+                        tools:backgroundTint="@color/qs_status_ok"
+                        tools:text="@string/status_folder_set" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/driveBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="@string/drive_body_ask" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/driveButton"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    tools:text="@string/drive_button_choose" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/driveAskButton"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/drive_button_ask" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Master toggle -->
         <com.google.android.material.card.MaterialCardView
             style="?attr/materialCardViewFilledStyle"
@@ -370,49 +454,56 @@
                     android:textAppearance="?attr/textAppearanceBodySmall"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
-                <!-- Hide delay -->
+                <!-- Hide delay (QwiKShot only; hidden in QwiKScan) -->
                 <LinearLayout
+                    android:id="@+id/delayGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:labelFor="@id/delaySlider"
+                            android:text="@string/delay_label"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <TextView
+                            android:id="@+id/delayValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:textAppearance="?attr/textAppearanceLabelLarge"
+                            android:textColor="?attr/colorPrimary"
+                            tools:text="100 ms" />
+                    </LinearLayout>
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/delaySlider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/delay_label"
+                        android:stepSize="10"
+                        android:value="100"
+                        android:valueFrom="50"
+                        android:valueTo="300"
+                        app:labelBehavior="gone" />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:labelFor="@id/delaySlider"
-                        android:text="@string/delay_label"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textColor="?attr/colorOnSurface" />
-
-                    <TextView
-                        android:id="@+id/delayValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:textAppearance="?attr/textAppearanceLabelLarge"
-                        android:textColor="?attr/colorPrimary"
-                        tools:text="100 ms" />
+                        android:text="@string/delay_help"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/delaySlider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/delay_label"
-                    android:stepSize="10"
-                    android:value="100"
-                    android:valueFrom="50"
-                    android:valueTo="300"
-                    app:labelBehavior="gone" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/delay_help"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/resetButton"

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- QwiKScan additions, merged over src/main/AndroidManifest.xml. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Android 11+ package visibility: lets QwiKScan check whether Google Drive is
+         installed and resolve its scanner. Starting Drive's exported activities
+         does not need this, but the dashboard's status card does. -->
+    <queries>
+        <package android:name="com.google.android.apps.docs" />
+        <!-- "Get Google Drive" button when Drive is missing. -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="market" />
+        </intent>
+    </queries>
+
+</manifest>

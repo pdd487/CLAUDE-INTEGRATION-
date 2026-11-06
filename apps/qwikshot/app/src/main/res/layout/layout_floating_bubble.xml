@@ -24,6 +24,6 @@
         android:outlineSpotShadowColor="#FF000000"
         android:padding="@dimen/bubble_icon_padding"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_shutter" />
+        android:src="@drawable/ic_bubble_glyph" />
 
 </FrameLayout>
