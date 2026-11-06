@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Always dark: the dashboard is a small control panel, not a reading app. -->
+    <style name="Theme.QwiKShot" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/qs_primary</item>
+        <item name="colorOnPrimary">@color/qs_on_primary</item>
+        <item name="colorPrimaryContainer">@color/qs_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/qs_on_primary_container</item>
+        <item name="colorSecondaryContainer">@color/qs_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/qs_on_secondary_container</item>
+
+        <item name="android:colorBackground">@color/qs_background</item>
+        <item name="colorSurface">@color/qs_background</item>
+        <item name="colorOnSurface">@color/qs_on_surface</item>
+        <item name="colorOnSurfaceVariant">@color/qs_on_surface_variant</item>
+        <item name="colorSurfaceContainer">@color/qs_surface_container</item>
+        <item name="colorSurfaceContainerHigh">@color/qs_surface_container_high</item>
+        <item name="colorSurfaceContainerHighest">@color/qs_surface_container_highest</item>
+        <item name="colorOutline">@color/qs_outline</item>
+        <item name="colorOutlineVariant">@color/qs_outline_variant</item>
+
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

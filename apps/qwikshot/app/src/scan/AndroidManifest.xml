@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- QwiKScan additions, merged over src/main/AndroidManifest.xml. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- "Name files": one HTTPS call to start the Claude routine. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Optional "Claude is naming your files, tap to watch" notification. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Android 11+ package visibility: lets QwiKScan check whether Google Drive is
+         installed and resolve its scanner. Starting Drive's exported activities
+         does not need this, but the dashboard's status card does. -->
+    <queries>
+        <package android:name="com.google.android.apps.docs" />
+        <!-- "Get Google Drive" button when Drive is missing. -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="market" />
+        </intent>
+    </queries>
+
+    <application>
+        <!-- Long-press shortcuts on the QwiKScan icon. -->
+        <activity android:name="com.qwikshot.app.MainActivity">
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+
+        <!-- Home-screen "Name files" button: no screen of its own. Not exported:
+             launchers start pinned and static shortcuts as this app. -->
+        <activity
+            android:name="com.qwikshot.app.NameFilesActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:label="@string/shortcut_name_files_short"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+    </application>
+
+</manifest>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Root is the overlay window's content. Its padding is a transparent ring
+     that keeps the 8dp elevation shadow inside the window surface. The service
+     sets the exact window and icon sizes from the "Bubble size" setting. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bubbleRoot"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:contentDescription="@string/bubble_content_description"
+    android:hapticFeedbackEnabled="true"
+    android:padding="@dimen/bubble_shadow_padding">
+
+    <ImageView
+        android:id="@+id/bubbleIcon"
+        android:layout_width="@dimen/bubble_default_size"
+        android:layout_height="@dimen/bubble_default_size"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_bubble_squircle"
+        android:elevation="@dimen/bubble_elevation"
+        android:importantForAccessibility="no"
+        android:outlineAmbientShadowColor="#FF000000"
+        android:outlineSpotShadowColor="#FF000000"
+        android:padding="@dimen/bubble_icon_padding"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_bubble_glyph" />
+
+</FrameLayout>

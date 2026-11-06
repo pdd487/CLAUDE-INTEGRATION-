@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bubble at its default 56dp size. The service rescales the corner radius
+         and icon inset proportionally when the size slider changes. -->
+    <dimen name="bubble_default_size">56dp</dimen>
+    <dimen name="bubble_corner_radius">18dp</dimen>
+    <dimen name="bubble_stroke_width">3dp</dimen>
+    <dimen name="bubble_elevation">8dp</dimen>
+    <dimen name="bubble_icon_padding">13dp</dimen>
+    <!-- Transparent ring around the bubble inside its window so the 8dp shadow
+         is not clipped by the window edge. -->
+    <dimen name="bubble_shadow_padding">10dp</dimen>
+    <!-- Gap between the bubble and the screen edge after snapping. -->
+    <dimen name="bubble_edge_margin">8dp</dimen>
+    <!-- Finger travel that still counts as a tap rather than a drag. -->
+    <dimen name="bubble_tap_slop">10dp</dimen>
+
+    <dimen name="close_target_size">56dp</dimen>
+    <dimen name="close_target_padding">12dp</dimen>
+    <dimen name="close_target_icon_padding">16dp</dimen>
+    <dimen name="close_target_elevation">6dp</dimen>
+    <dimen name="close_target_bottom_margin">48dp</dimen>
+    <!-- Bubble centre within this distance of the target centre arms the dismiss. -->
+    <dimen name="close_target_capture_radius">64dp</dimen>
+
+    <dimen name="screen_padding">20dp</dimen>
+    <dimen name="card_padding">20dp</dimen>
+    <dimen name="card_spacing">16dp</dimen>
+    <dimen name="step_badge_size">28dp</dimen>
+</resources>

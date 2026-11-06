@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shared by both apps. QwiKShot uses these as-is; QwiKScan overrides the
+     app-specific ones in src/scan/res/values/strings.xml. -->
+<resources>
+    <string name="app_name">QwiKShot</string>
+    <string name="app_tagline">One-tap screenshots from a floating bubble.</string>
+
+    <!-- Accessibility service (shown in Settings > Accessibility) -->
+    <string name="accessibility_service_label">QwiKShot bubble</string>
+    <string name="accessibility_service_description">Shows the QwiKShot floating bubble on top of other apps. Tap the bubble to take a screenshot, the same as pressing Volume Down + Power.\n\nQwiKShot uses this access only to draw the bubble and press the system screenshot button for you. It does not read what is on your screen, see what you type, or collect any data.</string>
+
+    <!-- Bubble -->
+    <string name="bubble_content_description">Take screenshot</string>
+
+    <!-- Step 1: overlay -->
+    <string name="step_one">1</string>
+    <string name="overlay_title">Overlay permission</string>
+    <string name="overlay_body">Backup way to draw the bubble. The bubble is normally drawn through the accessibility service in Step 2, so this is only used if your phone refuses that.</string>
+    <string name="overlay_button_grant">Grant overlay permission</string>
+    <string name="overlay_button_granted">Overlay permission granted</string>
+
+    <!-- Step 2: accessibility. %1$s is the service label, e.g. "QwiKShot bubble". -->
+    <string name="step_two">2</string>
+    <string name="accessibility_title">Accessibility service</string>
+    <string name="accessibility_body_off">Required. This is what lets the bubble float over every app and do its job when you tap it. In the list, open \"%1$s\" and turn it on.</string>
+    <string name="accessibility_body_running">Running. The bubble can float over every app.</string>
+    <string name="accessibility_body_stuck">Turned on, but Android has not started it. In Accessibility settings, turn \"%1$s\" off and back on.</string>
+    <string name="accessibility_button_enable">Open Accessibility settings</string>
+    <string name="accessibility_button_manage">Accessibility settings</string>
+    <string name="restricted_settings_hint">Installed this APK yourself and the switch is greyed out (\"Restricted setting\")? Open App info, tap the ⋮ menu in the top corner, choose \"Allow restricted settings\", then come back and try again.</string>
+    <string name="app_info_button">Open App info</string>
+
+    <!-- Step 3 (QwiKScan only): Google Drive -->
+    <string name="step_three">3</string>
+    <string name="drive_title">Google Drive</string>
+    <string name="drive_body_missing">The bubble opens Google Drive\'s document scanner, so it needs the Google Drive app.</string>
+    <string name="drive_body_ask">Tap the bubble to open Drive\'s scanner. When you finish a scan, Drive asks where to save it. Pick a folder to send every scan straight there instead.</string>
+    <string name="drive_body_folder">Every scan saves straight into \"%1$s\".</string>
+    <string name="drive_folder_unnamed">your chosen folder</string>
+    <string name="drive_button_install">Get Google Drive</string>
+    <string name="drive_button_choose">Choose a Drive folder</string>
+    <string name="drive_button_change">Change folder</string>
+    <string name="drive_button_ask">Ask each time instead</string>
+
+    <!-- Step 4 (QwiKScan only): name files with Claude -->
+    <string name="step_four">4</string>
+    <string name="claude_title">Name files with Claude</string>
+    <string name="claude_body">One tap sends Claude through your Google Drive. Generic names like Screenshot_…, IMG_… and Scanned_… become MM.DD_Subject, e.g. 11.06_Ford_SYNC_911_Assist_Fault.jpg. Files that already have real names are left alone.</string>
+    <string name="claude_setup_help">On claude.ai/code/routines, open \"Name my files\", add an API trigger and tap Generate token. Paste the URL and the token here.</string>
+    <string name="claude_url_hint">Routine URL (…/routines/trig_…/fire)</string>
+    <string name="claude_token_hint">Token (sk-ant-oat01-…)</string>
+    <string name="claude_button_save">Save</string>
+    <string name="claude_button_preview">Preview (no renaming)</string>
+    <string name="claude_button_run">Name my files now</string>
+    <string name="claude_button_pin">Add button to home screen</string>
+    <string name="claude_button_edit">Change routine or token</string>
+    <!-- %1$s is a time, e.g. 3:41 PM -->
+    <string name="claude_last_run">Last run started %1$s. Tap to open it in Claude.</string>
+    <string name="claude_url_invalid">Paste the URL from the API trigger box, ending in /fire.</string>
+    <string name="claude_token_missing">Paste the token too.</string>
+    <string name="claude_pin_unsupported">This home screen does not accept app buttons. Long-press the QwiKScan icon and drag \"Name files\" out instead.</string>
+
+    <string name="shortcut_name_files_short">Name files</string>
+    <string name="shortcut_name_files_long">Name my files with Claude</string>
+
+    <string name="claude_channel_name">Claude runs</string>
+    <string name="claude_channel_description">Shows when Claude starts naming your files, with a link to watch.</string>
+    <string name="claude_notif_title">Claude is naming your files</string>
+    <string name="claude_notif_preview_title">Claude is previewing new names</string>
+    <string name="claude_notif_text">Tap to watch. The Claude app tells you when it is done.</string>
+
+    <string name="toast_claude_not_set_up">Set up \"Name files with Claude\" in QwiKScan first.</string>
+    <string name="toast_claude_starting">Asking Claude to name your files…</string>
+    <string name="toast_claude_preview_starting">Asking Claude for a preview…</string>
+    <string name="toast_claude_started">Claude is on it. The Claude app tells you when it is done.</string>
+    <string name="toast_claude_preview_started">Preview started. Nothing is renamed; check the Claude app for the list.</string>
+    <string name="claude_error_network">Could not reach Claude. Check your connection and try again.</string>
+    <string name="claude_error_token">Claude did not accept the token. Generate a new one and paste it in QwiKScan.</string>
+    <string name="claude_error_not_found">That routine no longer exists. Check the URL in QwiKScan.</string>
+    <string name="claude_error_rejected">Claude refused the request. The routine may be paused.</string>
+    <string name="claude_error_access">This Claude account cannot start routines.</string>
+    <string name="claude_error_rate_limit">Too many runs this hour. Try again later.</string>
+    <string name="claude_error_server">Claude had a problem starting the run. Try again in a minute.</string>
+    <string name="status_not_set_up">Not set up</string>
+
+    <!-- Status pills -->
+    <string name="status_granted">Granted</string>
+    <string name="status_missing">Missing</string>
+    <string name="status_active">Active</string>
+    <string name="status_not_running">Not running</string>
+    <string name="status_off">Off</string>
+    <string name="status_ready">Ready</string>
+    <string name="status_folder_set">Folder set</string>
+    <string name="status_not_installed">Not installed</string>
+
+    <!-- Master toggle -->
+    <string name="master_title">Floating bubble</string>
+    <string name="master_summary_needs_service">Turn on the accessibility service in Step 2 first.</string>
+    <string name="master_summary_on">Showing. Tap it over any app to take a screenshot.</string>
+    <string name="master_summary_off">Hidden. Turn this on to bring the bubble back.</string>
+
+    <!-- Customization -->
+    <string name="customize_title">Customize</string>
+    <string name="size_label">Bubble size</string>
+    <string name="opacity_label">Idle opacity</string>
+    <string name="opacity_help">How see-through the bubble gets after 3 seconds without a touch.</string>
+    <string name="delay_label">Hide delay before screenshot</string>
+    <string name="delay_help">How long the bubble stays hidden before the capture fires. Raise it if the bubble ever shows up in your screenshots.</string>
+    <string name="value_dp">%1$d dp</string>
+    <string name="value_percent">%1$d%%</string>
+    <string name="value_ms">%1$d ms</string>
+    <string name="reset_defaults">Reset to defaults</string>
+
+    <!-- How-to -->
+    <string name="howto_title">Using the bubble</string>
+    <string name="howto_tap_label">Tap</string>
+    <string name="howto_tap">Takes a screenshot. The bubble hides itself first, so it never shows up in the picture.</string>
+    <string name="howto_drag_label">Drag</string>
+    <string name="howto_drag">Moves it. Let go and it snaps to the nearest side.</string>
+    <string name="howto_close_label">Drop on ✕</string>
+    <string name="howto_close">Hides the bubble. Turn it back on here.</string>
+    <string name="howto_long_press_label">Long-press</string>
+    <string name="howto_long_press">Opens this screen.</string>
+
+    <!-- %1$s app name, %2$s version -->
+    <string name="version_format">%1$s %2$s</string>
+
+    <!-- Toasts -->
+    <string name="toast_screenshot_failed">Screenshot failed. Android rejected the request.</string>
+    <!-- %1$s is the app name -->
+    <string name="toast_bubble_hidden">Bubble hidden. Open %1$s to bring it back.</string>
+    <string name="toast_overlay_failed">The bubble could not be drawn. Grant the overlay permission in the app.</string>
+    <string name="toast_settings_unavailable">Could not open that settings screen on this phone.</string>
+    <string name="toast_drive_missing">Google Drive is not installed.</string>
+    <string name="toast_drive_scan_failed">Could not open Google Drive\'s scanner.</string>
+    <string name="toast_drive_scanner_unavailable">This version of Drive cannot open its scanner directly. Tap + then Scan, or update Google Drive.</string>
+    <string name="toast_drive_folder_missing">Drive did not send back a folder. Try again, or let Drive ask each time.</string>
+</resources>
