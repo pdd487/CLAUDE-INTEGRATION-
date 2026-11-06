@@ -81,6 +81,9 @@ Format: **`MM.DD_Subject.ext`**, e.g. `11.06_Ford_SYNC_911_Assist_Fault.jpg`.
 - **MM.DD** is the date the picture was taken. Take it from the timestamp
   inside the generic name, which is already phone-local time. If the name has
   none, use `createdTime` converted to US Eastern time.
+- **Older years:** if that date is in an earlier year than today's date, put the
+  two-digit year in front: **`YY.MM.DD_Subject.ext`**, e.g.
+  `23.11.13_VPN_Servers_List.jpg`. Files from the current year keep `MM.DD`.
 - **Subject** is 2 to 6 words saying what the file is, each word capitalised and
   joined with underscores; a hyphen may stay inside a term (`Sign-in`,
   `TC-S2C-0`). Prefer the specific thing: an alarm number and message, an error
