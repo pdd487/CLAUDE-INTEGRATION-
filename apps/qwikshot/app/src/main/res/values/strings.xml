@@ -42,6 +42,47 @@
     <string name="drive_button_change">Change folder</string>
     <string name="drive_button_ask">Ask each time instead</string>
 
+    <!-- Step 4 (QwiKScan only): name files with Claude -->
+    <string name="step_four">4</string>
+    <string name="claude_title">Name files with Claude</string>
+    <string name="claude_body">One tap sends Claude through your Google Drive. Generic names like Screenshot_…, IMG_… and Scanned_… become MM.DD_Subject, e.g. 11.06_Ford_SYNC_911_Assist_Fault.jpg. Files that already have real names are left alone.</string>
+    <string name="claude_setup_help">On claude.ai/code/routines, open \"Name my files\", add an API trigger and tap Generate token. Paste the URL and the token here.</string>
+    <string name="claude_url_hint">Routine URL (…/routines/trig_…/fire)</string>
+    <string name="claude_token_hint">Token (sk-ant-oat01-…)</string>
+    <string name="claude_button_save">Save</string>
+    <string name="claude_button_preview">Preview (no renaming)</string>
+    <string name="claude_button_run">Name my files now</string>
+    <string name="claude_button_pin">Add button to home screen</string>
+    <string name="claude_button_edit">Change routine or token</string>
+    <!-- %1$s is a time, e.g. 3:41 PM -->
+    <string name="claude_last_run">Last run started %1$s. Tap to open it in Claude.</string>
+    <string name="claude_url_invalid">Paste the URL from the API trigger box, ending in /fire.</string>
+    <string name="claude_token_missing">Paste the token too.</string>
+    <string name="claude_pin_unsupported">This home screen does not accept app buttons. Long-press the QwiKScan icon and drag \"Name files\" out instead.</string>
+
+    <string name="shortcut_name_files_short">Name files</string>
+    <string name="shortcut_name_files_long">Name my files with Claude</string>
+
+    <string name="claude_channel_name">Claude runs</string>
+    <string name="claude_channel_description">Shows when Claude starts naming your files, with a link to watch.</string>
+    <string name="claude_notif_title">Claude is naming your files</string>
+    <string name="claude_notif_preview_title">Claude is previewing new names</string>
+    <string name="claude_notif_text">Tap to watch. The Claude app tells you when it is done.</string>
+
+    <string name="toast_claude_not_set_up">Set up \"Name files with Claude\" in QwiKScan first.</string>
+    <string name="toast_claude_starting">Asking Claude to name your files…</string>
+    <string name="toast_claude_preview_starting">Asking Claude for a preview…</string>
+    <string name="toast_claude_started">Claude is on it. The Claude app tells you when it is done.</string>
+    <string name="toast_claude_preview_started">Preview started. Nothing is renamed; check the Claude app for the list.</string>
+    <string name="claude_error_network">Could not reach Claude. Check your connection and try again.</string>
+    <string name="claude_error_token">Claude did not accept the token. Generate a new one and paste it in QwiKScan.</string>
+    <string name="claude_error_not_found">That routine no longer exists. Check the URL in QwiKScan.</string>
+    <string name="claude_error_rejected">Claude refused the request. The routine may be paused.</string>
+    <string name="claude_error_access">This Claude account cannot start routines.</string>
+    <string name="claude_error_rate_limit">Too many runs this hour. Try again later.</string>
+    <string name="claude_error_server">Claude had a problem starting the run. Try again in a minute.</string>
+    <string name="status_not_set_up">Not set up</string>
+
     <!-- Status pills -->
     <string name="status_granted">Granted</string>
     <string name="status_missing">Missing</string>

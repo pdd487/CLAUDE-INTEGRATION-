@@ -28,6 +28,54 @@ nearest edge, idle fade, drag onto ✕ to hide, long-press for the dashboard.
    pick the folder (for example `J&M_Temp`). Every scan then saves straight
    into it. Skip this and Drive asks where to save after each scan.
 
+## Name files with Claude (QwiKScan, Step 4)
+
+A **Name files** button on the home screen. One tap starts a Claude routine
+that goes through Google Drive and renames generic files (`Screenshot_…`,
+`IMG_…`, `PXL_…`, `Scanned_…`, `20261106_153312.jpg`, `Untitled…`) to
+**`MM.DD_Subject`**, e.g.
+`Screenshot_20261002_192714_Chrome.jpg` → `10.02_Google_Sign-in_Error_403_Drive_Bridge.jpg`.
+Files that already have real names are never touched.
+
+- **What Claude reads:** Drive's own text recognition and image labels for
+  photos and screenshots, and the text of PDFs and Docs. Photos with no text
+  get the uniform fallback `MM.DD_Photo_HHMM`.
+- **J&M machines:** a Center number visible in the picture goes first,
+  `11.06_00255_Spindle_Alarm_1013.jpg`. It is never guessed from a model name.
+- **Privacy:** account numbers, amounts, addresses, phone numbers, emails and
+  private people's names never go into a file name. Banking screenshots get a
+  generic name.
+- **Limits:** only Google Drive. Claude can't see files that exist only on the
+  phone, so upload or back them up to Drive first. At most 40 files per run by
+  default.
+- **Preview:** *Preview (no renaming)* runs the same routine as a dry run and
+  lists the names it would use.
+
+### One-time setup
+
+The routine **Name my files** already exists on the account (id
+`trig_01GQ32KBeReuuNKHTSERdf3R`, on-demand only, push notification when a run
+finishes). Its prompt is kept in [`routines/name-my-files.md`](routines/name-my-files.md).
+To change the naming rules, edit that file, then paste it into the routine.
+
+1. On **claude.ai/code/routines**, open **Name my files**.
+2. **Add the Google Drive connector** to the routine. It was created without
+   connectors, and it can't see Drive until this is done.
+3. Under the routine's triggers, add an **API** trigger and tap **Generate
+   token**. Copy the URL and the token; the token is shown only once.
+4. In QwiKScan, Step 4: paste both, then **Save**.
+5. Tap **Preview (no renaming)** once and check the list in the Claude app.
+   Then **Add button to home screen**. Long-pressing the QwiKScan icon also
+   offers **Name files**.
+
+How the button works: `NameFilesActivity` has no screen. It sends
+`POST https://api.anthropic.com/v1/claude_code/routines/{trig_id}/fire`
+(`Authorization: Bearer <token>`, `anthropic-version: 2023-06-01`) and closes.
+The token can only start this one routine and can't read anything; it is kept
+in the app's private storage, which is excluded from backups. Each run uses
+your Claude subscription like any Claude Code session. Routines accept up to
+30 starts an hour.
+
 ## Using the bubble
 
 | Gesture | What it does |
@@ -162,10 +210,13 @@ app/src/
 │   ├── java/com/qwikshot/app/
 │   │   ├── QwiKShotAccessibilityService.kt   overlay, touch physics, tap actions
 │   │   ├── DriveScan.kt                      Google Drive scanner launch + folder picker
+│   │   ├── ClaudeRoutine.kt                  starts the "Name my files" Claude routine
+│   │   ├── NameFilesActivity.kt              home-screen "Name files" button (no UI)
 │   │   ├── MainActivity.kt                   dashboard
 │   │   └── QwiKShotPrefs.kt                  shared settings + ranges
 │   └── res/                              QwiKShot look (slate/teal)
 └── scan/                                  QwiKScan overrides
-    ├── AndroidManifest.xml                <queries> for Google Drive
-    └── res/                               name, blue/amber colors, scan glyph, icons
+    ├── AndroidManifest.xml                Drive <queries>, internet, Name files activity
+    └── res/                               name, blue/amber colors, scan glyph, icons, shortcuts
+routines/name-my-files.md                  the Claude routine's prompt (source copy)
 ```

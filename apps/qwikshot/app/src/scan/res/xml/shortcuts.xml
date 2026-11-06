@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Long-press the QwiKScan icon: "Name files" starts the Claude routine. The
+     target activity is not exported; launchers start shortcuts as this app. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_shortcut_name_files"
+        android:shortcutId="name_files"
+        android:shortcutLongLabel="@string/shortcut_name_files_long"
+        android:shortcutShortLabel="@string/shortcut_name_files_short">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.qwikshot.app.NameFilesActivity"
+            android:targetPackage="com.qwikscan.app" />
+    </shortcut>
+</shortcuts>

@@ -60,6 +60,33 @@ class QwiKShotPrefs(context: Context) {
         putInt(KEY_HIDE_DELAY_MS, DELAY_DEFAULT_MS)
     }
 
+    /**
+     * QwiKScan only: the "Name my files" Claude routine's fire URL and token, as
+     * shown by claude.ai/code/routines when an API trigger is added. The token
+     * can only start that one routine; it cannot read anything.
+     */
+    var routineUrl: String?
+        get() = raw.getString(KEY_ROUTINE_URL, null)?.takeIf { it.isNotBlank() }
+        set(value) = raw.edit { putString(KEY_ROUTINE_URL, value) }
+
+    var routineToken: String?
+        get() = raw.getString(KEY_ROUTINE_TOKEN, null)?.takeIf { it.isNotBlank() }
+        set(value) = raw.edit { putString(KEY_ROUTINE_TOKEN, value) }
+
+    val isClaudeNamingSetUp: Boolean
+        get() = routineUrl != null && routineToken != null
+
+    /** Link to the most recent run's Claude session, and when it started. */
+    val lastRunUrl: String?
+        get() = raw.getString(KEY_LAST_RUN_URL, null)
+    val lastRunAtMillis: Long
+        get() = raw.getLong(KEY_LAST_RUN_AT, 0L)
+
+    fun saveLastRun(sessionUrl: String?, atMillis: Long) = raw.edit {
+        putString(KEY_LAST_RUN_URL, sessionUrl)
+        putLong(KEY_LAST_RUN_AT, atMillis)
+    }
+
     /** QwiKScan only: the Drive folder every scan saves into, or null for "Drive asks". */
     var scanFolder: DriveScan.Folder?
         get() {
@@ -91,6 +118,10 @@ class QwiKShotPrefs(context: Context) {
         const val KEY_SCAN_FOLDER_COMPONENT = "scan_folder_component"
         const val KEY_SCAN_FOLDER_URI = "scan_folder_uri"
         const val KEY_SCAN_FOLDER_NAME = "scan_folder_name"
+        const val KEY_ROUTINE_URL = "claude_routine_url"
+        const val KEY_ROUTINE_TOKEN = "claude_routine_token"
+        const val KEY_LAST_RUN_URL = "claude_last_run_url"
+        const val KEY_LAST_RUN_AT = "claude_last_run_at"
 
         const val SIDE_LEFT = 0
         const val SIDE_RIGHT = 1

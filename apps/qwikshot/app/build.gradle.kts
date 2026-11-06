@@ -42,8 +42,8 @@ android {
         create("scan") {
             dimension = "bubble"
             applicationId = "com.qwikscan.app"
-            versionCode = 1
-            versionName = "1.0.0"
+            versionCode = 2
+            versionName = "1.1.0"
             // Tap = open Google Drive's document scanner.
             buildConfigField("boolean", "DRIVE_SCAN_MODE", "true")
             // Docks lower than QwiKShot so both bubbles can sit on the same edge.

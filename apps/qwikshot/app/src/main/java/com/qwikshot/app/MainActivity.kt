@@ -1,14 +1,17 @@
 package com.qwikshot.app
 
+import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.format.DateFormat
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.SystemBarStyle
@@ -18,6 +21,9 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -29,7 +35,8 @@ import kotlin.math.roundToInt
 
 /**
  * Control dashboard: permission status, master toggle, and live bubble settings.
- * In QwiKScan it also shows Step 3, where the Google Drive scan folder is chosen.
+ * In QwiKScan it also shows Step 3, where the Google Drive scan folder is chosen,
+ * and Step 4, which sets up the "Name files with Claude" home-screen button.
  *
  * Every control writes straight to [QwiKShotPrefs]; the accessibility service
  * listens to the same preferences and updates the bubble as the sliders move.
@@ -62,6 +69,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             refreshStatus()
         }
 
+    /** QwiKScan Step 4: lets the "Claude is naming your files" notification show. */
+    private val notificationPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
+    /** QwiKScan Step 4: true while the routine URL/token fields are open for changes. */
+    private var editingClaude = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // The dashboard is always dark, so force light system-bar icons regardless
         // of the phone's own light/dark setting.
@@ -77,10 +91,18 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         applySystemBarInsets()
         setupPermissionCards()
         setupDriveCard()
+        setupClaudeCard()
         setupMasterToggle()
         setupSliders()
         binding.versionText.text =
             getString(R.string.version_format, getString(R.string.app_name), BuildConfig.VERSION_NAME)
+        showClaudeCardIfAsked(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        showClaudeCardIfAsked(intent)
     }
 
     override fun onStart() {
@@ -107,6 +129,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         when (key) {
             QwiKShotPrefs.KEY_BUBBLE_ENABLED,
             QwiKShotPrefs.KEY_SCAN_FOLDER_URI,
+            QwiKShotPrefs.KEY_LAST_RUN_AT,
             null -> refreshStatus()
         }
     }
@@ -235,6 +258,99 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     // ---------------------------------------------------------------------------------------------
+    // Step 4 (QwiKScan): name files with Claude
+    // ---------------------------------------------------------------------------------------------
+
+    private fun setupClaudeCard() {
+        binding.claudeCard.isVisible = BuildConfig.DRIVE_SCAN_MODE
+        if (!BuildConfig.DRIVE_SCAN_MODE) return
+
+        binding.claudeSaveButton.setOnClickListener { saveClaudeSetup() }
+        binding.claudeRunButton.setOnClickListener { ClaudeRoutine.start(this, preview = false) }
+        binding.claudePreviewButton.setOnClickListener { ClaudeRoutine.start(this, preview = true) }
+        binding.claudePinButton.setOnClickListener { pinNameFilesButton() }
+        binding.claudeEditButton.setOnClickListener {
+            editingClaude = true
+            binding.claudeUrlInput.setText(prefs.routineUrl.orEmpty())
+            // The token is never shown back; paste it again only if it changed.
+            binding.claudeTokenInput.setText("")
+            refreshClaudeCard()
+        }
+        binding.claudeLastRun.setOnClickListener {
+            prefs.lastRunUrl?.let { url ->
+                if (!launch(Intent(Intent.ACTION_VIEW, url.toUri()))) toast(R.string.toast_settings_unavailable)
+            }
+        }
+    }
+
+    private fun refreshClaudeCard() {
+        if (!BuildConfig.DRIVE_SCAN_MODE) return
+        val setUp = prefs.isClaudeNamingSetUp
+        if (setUp) {
+            setPill(binding.claudeStatus, PillState.OK, R.string.status_ready)
+        } else {
+            setPill(binding.claudeStatus, PillState.WARN, R.string.status_not_set_up)
+        }
+        binding.claudeSetupGroup.isVisible = !setUp || editingClaude
+        binding.claudeReadyGroup.isVisible = setUp && !editingClaude
+
+        val lastRunAt = prefs.lastRunAtMillis
+        binding.claudeLastRun.isVisible = lastRunAt > 0 && prefs.lastRunUrl != null
+        if (binding.claudeLastRun.isVisible) {
+            val time = DateFormat.getTimeFormat(this).format(lastRunAt)
+            binding.claudeLastRun.text = getString(R.string.claude_last_run, time)
+        }
+    }
+
+    private fun saveClaudeSetup() {
+        val url = ClaudeRoutine.normalizeUrl(binding.claudeUrlInput.text?.toString().orEmpty())
+        val typedToken = binding.claudeTokenInput.text?.toString()?.trim().orEmpty()
+        // When editing, an empty token field keeps the saved token.
+        val token = typedToken.ifEmpty { if (editingClaude) prefs.routineToken.orEmpty() else "" }
+
+        binding.claudeUrlLayout.error = if (url == null) getString(R.string.claude_url_invalid) else null
+        binding.claudeTokenLayout.error = if (token.isEmpty()) getString(R.string.claude_token_missing) else null
+        if (url == null || token.isEmpty()) return
+
+        prefs.routineUrl = url
+        prefs.routineToken = token
+        editingClaude = false
+        binding.claudeTokenInput.setText("")
+        refreshClaudeCard()
+        askForNotificationPermission()
+    }
+
+    private fun askForNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        val granted = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+            PackageManager.PERMISSION_GRANTED
+        if (!granted) notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+    }
+
+    /** Puts a "Name files" icon on the home screen; one tap starts the Claude routine. */
+    private fun pinNameFilesButton() {
+        if (!ShortcutManagerCompat.isRequestPinShortcutSupported(this)) {
+            toast(R.string.claude_pin_unsupported)
+            return
+        }
+        val shortcut = ShortcutInfoCompat.Builder(this, PINNED_SHORTCUT_ID)
+            .setShortLabel(getString(R.string.shortcut_name_files_short))
+            .setLongLabel(getString(R.string.shortcut_name_files_long))
+            .setIcon(IconCompat.createWithResource(this, R.mipmap.ic_shortcut_name_files))
+            .setIntent(Intent(this, NameFilesActivity::class.java).setAction(Intent.ACTION_VIEW))
+            .build()
+        if (!ShortcutManagerCompat.requestPinShortcut(this, shortcut, null)) {
+            toast(R.string.claude_pin_unsupported)
+        }
+    }
+
+    private fun showClaudeCardIfAsked(intent: Intent?) {
+        if (!BuildConfig.DRIVE_SCAN_MODE) return
+        if (intent?.getBooleanExtra(EXTRA_SHOW_CLAUDE_NAMING, false) != true) return
+        binding.root.post { binding.root.smoothScrollTo(0, binding.claudeCard.top) }
+    }
+
+    // ---------------------------------------------------------------------------------------------
     // Master toggle
     // ---------------------------------------------------------------------------------------------
 
@@ -291,8 +407,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         binding.restrictedHint.isVisible = showRestrictedHelp
         binding.appInfoButton.isVisible = showRestrictedHelp
 
-        // Step 3 (QwiKScan)
+        // Steps 3 and 4 (QwiKScan)
         refreshDriveCard()
+        refreshClaudeCard()
 
         // Master toggle
         syncingUi = true
@@ -399,8 +516,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private companion object {
-        const val EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key"
-        const val EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":settings:show_fragment_args"
+    companion object {
+        /** Opens the dashboard scrolled to Step 4 (from the "Name files" button before setup). */
+        const val EXTRA_SHOW_CLAUDE_NAMING = "com.qwikshot.app.extra.SHOW_CLAUDE_NAMING"
+
+        private const val PINNED_SHORTCUT_ID = "name_files_home"
+        private const val EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key"
+        private const val EXTRA_SHOW_FRAGMENT_ARGUMENTS = ":settings:show_fragment_args"
     }
 }
