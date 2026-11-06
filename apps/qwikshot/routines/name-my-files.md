@@ -90,8 +90,9 @@ Format: **`MM.DD_Subject.ext`**, e.g. `11.06_Ford_SYNC_911_Assist_Fault.jpg`.
   when the number itself appears; never guess a Center number from a model name,
   because many machines share a model.
 - **No usable content** (a photo with no text and only vague labels): use a
-  uniform fallback instead of guessing, `MM.DD_Photo_HHMM` for camera pictures
-  or `MM.DD_<App>_Screenshot_HHMM` for screenshots (the app from the old name).
+  uniform fallback instead of guessing, `MM.DD_Photo_HHMMSS` for camera pictures
+  or `MM.DD_<App>_Screenshot_HHMMSS` for screenshots (the app from the old name).
+  Seconds keep burst shots unique and in order without `_2`, `_3` suffixes.
 - **Privacy:** never put these in a file name: account or card numbers, money
   amounts or balances, passwords, codes, tokens, street addresses, phone
   numbers, email addresses, or full names of private people. A screenshot that
